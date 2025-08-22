@@ -71,6 +71,16 @@ function CryptoApi() {
 
     fetchCoinData();
   }, []);
+
+function formatMoney(num) {
+  if (num >= 1_000_000_000_000) return (num / 1_000_000_000_000).toFixed(2) + "T";
+  if (num >= 1_000_000_000) return (num / 1_000_000_000).toFixed(2) + "B";
+  if (num >= 1_000_000) return (num / 1_000_000).toFixed(2) + "M";
+  if (num >= 1_000) return (num / 1_000).toFixed(2) + "K";
+  return num;
+}
+
+
   return (
     <div className="w-full py-[5%] sm:p-[5%] text-white relatice">
       <div className="sm:w-[75%] md-w-[68%] lg:w-[60%] mx-auto text-center">
@@ -94,39 +104,46 @@ function CryptoApi() {
             </button>
           </form>
         </div>
+
+
         {/* ----------------- topCoin table ----------------- */}
         <table className="w-full bg-deepPurple shadow-md rounded-lg border border-gray-300 overflow-hidden">
           <thead className="bg-gray-600 text-white">
-           <tr>
-                {["#", "Coin", "Price", "Status", " Market Cap", "Predection"].map(
-                  (header, idx) => (
-                    <th
-                      key={idx}
-                      className="px-2 sm:px-3 lg:px-4 py-2 text-left text-xs sm:text-sm"
-                    >
-                      {header}
-                    </th>
-                  )
-                )}
-              </tr>
+            <tr>
+              {[
+                "#",
+                "Coin",
+                "Price",
+                "Status",
+                " Market Cap",
+                "Predection",
+              ].map((header, idx) => (
+                <th
+                  key={idx}
+                  className="px-2 sm:px-3 lg:px-4 py-2 text-left text-xs sm:text-sm"
+                >
+                  {header}
+                </th>
+              ))}
+            </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
             {topCoin
               .filter((coin) => popularCoin.includes(coin.id))
               .map((famousCoin, index) => (
                 <tr key={index}>
-                  <td className="px-1 sm:px-2 md:px-3 lg:px-4 py-2 xs:text-[12px] sm:text-[14px] text-start">
+                  <td className="px-1 sm:px-2 md:px-3 lg:px-4 py-2 text-[12px] sm:text-[14px] text-start">
                     {index + 1}
                   </td>
-                  <td className="px-1 sm:px-2 md:px-3 lg:px-4 py-2 xs:text-[12px] sm:text-[14px] text-start font-semibold text-gray-400 capitalize flex items-center gap-2">
+                  <td className="px-1 sm:px-2 md:px-3 lg:px-4 py-2 text-[12px] sm:text-[14px] text-start font-semibold text-gray-400 capitalize flex items-center gap-2">
                     <img
                       src={famousCoin?.image}
                       alt={famousCoin?.name}
-                      className="w-6 h-6 rounded-full"
+                      className="w-6 h-6 rounded-full hidden sm:block"
                     />
                     {famousCoin?.name}
                   </td>
-                  <td className="px-1 sm:px-2 md:px-3 lg:px-4 py-2 xs:text-[12px] sm:text-[14px] text-start">
+                  <td className="px-1 sm:px-2 md:px-3 lg:px-4 py-2  text-[12px] sm:text-[14px] text-start">
                     {famousCoin?.current_price
                       ? `$${famousCoin?.current_price}`
                       : "Loading..."}
@@ -142,12 +159,12 @@ function CryptoApi() {
                     %
                   </td>
 
-                  <td className="px-1 sm:px-2 md:px-3 lg:px-4 py-2 xs:text-[12px] sm:text-[14px] text-start">
-                    {famousCoin?.market_cap || "Loading..."}
+                  <td className="px-1 sm:px-2 md:px-3 lg:px-4 py-2  text-[12px] sm:text-[14px] text-start">
+                    {formatMoney(famousCoin?.market_cap)}
                   </td>
-                  <td className="px-1 sm:px-2 md:px-3 lg:px-4 py-2 xs:text-[12px] sm:text-[14px] font-bold text-start">
+                  <td className="px-1 sm:px-2 md:px-3 lg:px-4 py-2  text-[12px] sm:text-[14px] font-bold text-start">
                     {famousCoin?.price_change_percentage_24h > 0 ? (
-                      <span className="text-green-600 text-[12px] sm:text-[14px]">
+                      <span className="text-green-600 text-[10px] sm:text-[14px]">
                         UP 📈
                       </span>
                     ) : (
@@ -175,30 +192,35 @@ function CryptoApi() {
           >
             <RxCross2 className=" text-[25px] sm:text-[36px] hover:cursor-pointer text-black" />
           </div>
-          <h1 className="text-black py-[10px] text-center sm:text-[24px] font-semibold">
+          <h1 className="text-black py-[10px] text-center bsm:text-[24px] font-semibold">
             Welcome to Predection Cell
           </h1>
           <table className="w-full border border-gray-300 shadow-md rounded-lg overflow-hidden">
             <thead className="bg-gray-600 text-white">
               <tr>
-                {["#", "Coin", "Price", "Status", " Market Cap", "Predection"].map(
-                  (header, idx) => (
-                    <th
-                      key={idx}
-                      className="px-2 sm:px-3 lg:px-4 py-2 text-left text-xs sm:text-sm"
-                    >
-                      {header}
-                    </th>
-                  )
-                )}
+                {[
+                  "#",
+                  "Coin",
+                  "Price",
+                  "Status",
+                  " Market Cap",
+                  "Predection",
+                ].map((header, idx) => (
+                  <th
+                    key={idx}
+                    className="px-1 sm:px-2 lg:px-4 py-2 text-left text-xs sm:text-sm"
+                  >
+                    {header}
+                  </th>
+                ))}
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
               <tr>
-                <td className="sm:px-1 md:px-3 lg:px-4 py-2xs:text-[12px] sm:text-[14px]text-start text-gray-900">
+                <td className="sm:px-1 md:px-3 lg:px-4 py-2 text-[12px] sm:text-[14px]text-start text-gray-900">
                   1
                 </td>
-                <td className="sm:px-1 md:px-3 lg:px-4 py-2xs:text-[12px] sm:text-[14px]text-start text-gray-900 font-semibold text-gray-400 capitalize flex items-center gap-2">
+                <td className="sm:px-1 md:px-3 lg:px-4 py-2 text-[12px] sm:text-[14px]text-start text-gray-900 font-semibold text-gray-400 capitalize flex items-center gap-2">
                   <img
                     src={currentData?.image}
                     alt={currentData?.name}
@@ -206,7 +228,7 @@ function CryptoApi() {
                   />
                   {currentData?.name}
                 </td>
-                <td className="sm:px-1 md:px-3 lg:px-4 py-2xs:text-[12px] sm:text-[14px]text-start text-gray-900">
+                <td className="sm:px-1 md:px-3 lg:px-4 py-2 text-[12px] sm:text-[14px]text-start text-gray-900">
                   {currentData?.current_price
                     ? `$${currentData?.current_price}`
                     : "Loading..."}
@@ -220,10 +242,10 @@ function CryptoApi() {
                 >
                   {currentData?.price_change_percentage_24h?.toFixed(2) || "0"}%
                 </td>
-                <td className="sm:px-1 md:px-3 lg:px-4 py-2xs:text-[12px] sm:text-[14px]text-start text-gray-900">
-                  {currentData?.market_cap || "Loading..."}
+                <td className="sm:px-1 md:px-3 lg:px-4 py-2 text-[12px] sm:text-[14px]text-start text-gray-900">
+                  {formatMoney(currentData?.market_cap)}
                 </td>
-                <td className="sm:px-1 md:px-3 lg:px-4 py-2xs:text-[12px] sm:text-[14px]font-bold text-start">
+                <td className="sm:px-1 md:px-3 lg:px-4 py-2 text-[12px] sm:text-[14px]font-bold text-start">
                   {currentData?.price_change_percentage_24h > 0 ? (
                     <span className="text-green-600">UP 📈</span>
                   ) : (
@@ -235,81 +257,87 @@ function CryptoApi() {
           </table>
 
           <div className="w-full py-2">
-            <table className="min-w-full border border-gray-300 shadow-md rounded-lg overflow-hidden">
-              <thead className="bg-gray-600 text-white">
-                <tr>
-                  {["#", "Coin", "24h", "7d", "14d", "1m", "6m", "1y"].map(
-                    (header, idx) => (
-                      <th
-                        key={idx}
-                        className="px-2 sm:px-3 lg:px-4 py-2 text-left text-xs sm:text-sm"
-                      >
-                        {header}
-                      </th>
-                    )
+            <div className="p-4 space-y-2 bg-gray-100 rounded-md shadow-md">
+              <div className="flex items-center gap-2">
+                <span className="font-semibold text-gray-700">Coin:</span>
+                <img
+                  src={currentData?.image}
+                  alt={currentData?.name}
+                  className="w-6 h-6 rounded-full"
+                />
+                <span className="text-gray-900 capitalize">
+                  {currentData?.name}
+                </span>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <span className="font-semibold text-gray-700">24h:</span>
+                <span className="text-gray-900">
+                  {currentData?.price_change_percentage_24h_in_currency?.toFixed(
+                    2
                   )}
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-200">
-                <tr>
-                  <td className="sm:px-1 md:px-3 lg:px-4 py-2xs:text-[12px] sm:text-[14px]text-start text-gray-900">
-                    1
-                  </td>
-                  <td className="sm:px-1 md:px-3 lg:px-4 py-2xs:text-[12px] sm:text-[14px]text-start text-gray-900 font-semibold text-gray-400 capitalize flex items-center gap-2">
-                    <img
-                      src={currentData?.image}
-                      alt={currentData?.name}
-                      className="hidden sm:block w-6 h-6 rounded-full"
-                    />
-                    {currentData?.name}
-                  </td>
-                  <td className="sm:px-1 md:px-3 lg:px-4 py-2xs:text-[12px] sm:text-[14px]text-start text-gray-900">
-                    {currentData?.price_change_percentage_24h_in_currency?.toFixed(
-                      2
-                    )}
-                    %
-                  </td>
-                  <td className="sm:px-1 md:px-3 lg:px-4 py-2xs:text-[12px] sm:text-[14px]text-start text-gray-900">
-                    {currentData?.price_change_percentage_7d_in_currency?.toFixed(
-                      2
-                    )}
-                    %
-                  </td>
-                  <td className="sm:px-1 md:px-3 lg:px-4 py-2xs:text-[12px] sm:text-[14px]text-start text-gray-900">
-                    {currentData?.price_change_percentage_14d_in_currency?.toFixed(
-                      2
-                    )}
-                    %
-                  </td>
-                  <td className="sm:px-1 md:px-3 lg:px-4 py-2xs:text-[12px] sm:text-[14px]text-start text-gray-900">
-                    {currentData?.price_change_percentage_30d_in_currency?.toFixed(
-                      2
-                    )}
-                    %
-                  </td>
-                  <td className="sm:px-1 md:px-3 lg:px-4 py-2xs:text-[12px] sm:text-[14px]text-start text-gray-900">
-                    {currentData?.price_change_percentage_200d_in_currency?.toFixed(
-                      2
-                    )}
-                    %
-                  </td>
-                  <td className="sm:px-1 md:px-3 lg:px-4 py-2xs:text-[12px] sm:text-[14px]text-start text-gray-900">
-                    {currentData?.price_change_percentage_1y_in_currency?.toFixed(
-                      2
-                    )}
-                    %
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+                  %
+                </span>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <span className="font-semibold text-gray-700">7d:</span>
+                <span className="text-gray-900">
+                  {currentData?.price_change_percentage_7d_in_currency?.toFixed(
+                    2
+                  )}
+                  %
+                </span>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <span className="font-semibold text-gray-700">14d:</span>
+                <span className="text-gray-900">
+                  {currentData?.price_change_percentage_14d_in_currency?.toFixed(
+                    2
+                  )}
+                  %
+                </span>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <span className="font-semibold text-gray-700">1m:</span>
+                <span className="text-gray-900">
+                  {currentData?.price_change_percentage_30d_in_currency?.toFixed(
+                    2
+                  )}
+                  %
+                </span>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <span className="font-semibold text-gray-700">6m:</span>
+                <span className="text-gray-900">
+                  {currentData?.price_change_percentage_200d_in_currency?.toFixed(
+                    2
+                  )}
+                  %
+                </span>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <span className="font-semibold text-gray-700">1y:</span>
+                <span className="text-gray-900">
+                  {currentData?.price_change_percentage_1y_in_currency?.toFixed(
+                    2
+                  )}
+                  %
+                </span>
+              </div>
+            </div>
           </div>
         </div>
 
         <div
-          className="absolute top-7 end-10"
+          className="absolute top-4 end-5"
           onClick={() => setShowToggle(false)}
         >
-          <RxCross2 className="text-[42px] hover:cursor-pointer" />
+          <RxCross2 className="text-[25px] sm:text-[42px] hover:cursor-pointer" />
         </div>
       </div>
     </div>
